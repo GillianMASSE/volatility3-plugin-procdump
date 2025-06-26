@@ -1,0 +1,23 @@
+[⚠️ Suspicious Content] 
+(venv) gillian@LAPTOP-UPHBAHQF:~/volatility/volatility3$ file ./dumps/explorer.exe_2728_776f0000-77898fff.dmp
+./dumps/explorer.exe_2728_776f0000-77898fff.dmp: PE32+ executable (DLL) (console) x86-64, for MS Windows, 7 sections
+(venv) gillian@LAPTOP-UPHBAHQF:~/volatility/volatility3$ file ./file.0xfa801b1c7680.0xfa801b27f7a0.ImageSectionObject.explorer.exe.img
+./file.0xfa801b1c7680.0xfa801b27f7a0.ImageSectionObject.explorer.exe.img: PE32+ executable (GUI) x86-64, for MS Windows, 6 sections
+
+strings ./file.0xfa801b1c7680.0xfa801b27f7a0.ImageSectionObject.explorer.exe.img | less
+
+D$hI
+A_A^A]A\_^][
+NXE3
+UVWATAUAVAWH
+D;gL
+A_A^A]A\_^][
+\$0H
+t!SH
+D$0(
+\$pH
+\$0H
+l$8H
+\$0H
+WATAUAVAWH
+tqHc

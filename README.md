@@ -21,6 +21,14 @@ This repository contains a custom Volatility 3 plugin, `ProcdumpCustom`, designe
 * **Ubuntu 22.04**
 * **Windows 7 x64 memory image (OtterCTF.vmem)**
 
+## 🧾 Download the Sample Memory Dump
+
+The memory dump used to test the plugin is available here:
+
+🔗 [Download OtterCTF.vmem (MEGA link)](https://mega.nz/file/sh8wmCIL#b4tpech4wzc3QQ6YgQ2uZnOmctRZ2duQxDqxbkWYipQ)
+
+> ⚠️ Please note: the file is ~large and may require some time to download.
+
 ## 🛠️ Installation Instructions
 
 ### 1. Clone Volatility 3
@@ -87,3 +95,7 @@ This plugin was developed as part of a digital forensics course project. The ful
 ## 📄 License
 
 This project is provided for educational and research purposes only.
+
+
+Dans ce readme, ajoute le fait qu'on peut télécharger la vmem OtterCTF.vmem ici 
+https://mega.nz/file/sh8wmCIL#b4tpech4wzc3QQ6YgQ2uZnOmctRZ2duQxDqxbkWYipQ
