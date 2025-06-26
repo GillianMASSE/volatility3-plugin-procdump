@@ -13,8 +13,8 @@ class ProcdumpCustom(interfaces.plugins.PluginInterface):
     def get_requirements(cls):
         return [
             requirements.ModuleRequirement(name="kernel", description="Windows kernel", architectures=["Intel32", "Intel64"]),
-            requirements.StringRequirement(name="dump-dir", description="Répertoire de sortie des dumps", optional=False),
-            requirements.ListRequirement(name="pid", element_type=int, description="Liste des PID à dumper", optional=True)
+            requirements.StringRequirement(name="dump-dir", description="Dump output directory", optional=False),
+            requirements.ListRequirement(name="pid", element_type=int, description="List of PIDs to dump", optional=True)
         ]
 
     def _generator(self):
@@ -47,14 +47,14 @@ class ProcdumpCustom(interfaces.plugins.PluginInterface):
 
                         result = f"Dumpé à {path}"
                     except exceptions.InvalidAddressException:
-                        result = "Adresse invalide pour cette région VAD"
+                        result = "Invalid address for this VAD region"
                     except Exception as e:
-                        result = f"Erreur dump VAD: {str(e)}"
+                        result = f"VAD dump error: {str(e)}"
 
                     yield (0, [format_hints.Hex(pid), image, result])
 
             except Exception as e:
-                result = f"Erreur globale sur le processus : {str(e)}"
+                result = f"Global error on process: {str(e)}"
                 yield (0, [format_hints.Hex(pid), image, result])
 
     def run(self):
