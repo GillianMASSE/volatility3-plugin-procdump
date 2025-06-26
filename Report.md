@@ -156,22 +156,63 @@ Another persistent challenge was a `TypeError` triggered during rendering: “wr
 
 In some cases, the plugin would dump memory segments that did not contain recognizable PE headers (i.e., no `MZ` signature). This suggested the dumps were either corrupted or not PE files at all. However, using Unix tools like `file` and `strings`, it was discovered that many of these files were valid PE fragments, merely not aligned at the beginning of the executable code. This insight led to better filtering mechanisms during the dump process.
 
-Each of these failures—while initially frustrating—contributed to a deeper understanding of Volatility 3's architecture. The repeated cycle of trial, error, debugging, and refactoring played a key role in shaping a functional, robust plugin that conformed to the framework's expectations. The experience highlighted the importance of reading the source code of official plugins, using meaningful logging for diagnostics, and validating assumptions against known working examples.
+Each of these failures, while initially frustrating, contributed to a deeper understanding of Volatility 3's architecture. The repeated cycle of trial, error, debugging, and refactoring played a key role in shaping a functional, robust plugin that conformed to the framework's expectations. The experience highlighted the importance of reading the source code of official plugins, using meaningful logging for diagnostics, and validating assumptions against known working examples.
 
 
 #### 3.3 Troubleshooting Strategy
 
-Overcoming the initial roadblocks required a methodical and research-driven troubleshooting strategy. Recognizing that the Volatility 3 ecosystem was significantly different from its predecessor, the first step was to **consult a wide range of resources**. These included the official Volatility 3 documentation, GitHub issues posted by other users encountering similar problems, detailed plugin implementation examples provided within the framework, and several online discussions from forums such as Stack Overflow and GitHub Discussions.
+Overcoming the initial roadblocks required a **methodical** and **research-driven troubleshooting strategy**. Recognizing that the **Volatility 3 ecosystem** was significantly different from its predecessor, the first step was to consult a wide range of resources:
 
-A key insight from this phase was the value of examining **existing and well-maintained plugins** that already functioned under the Volatility 3 architecture. Notably, plugins like `vadinfo`, `dumpfiles`, and `malfind` were analyzed in depth. These plugins demonstrated best practices in memory access, error handling, and symbol resolution, serving as crucial templates for the development of the new `procdump` port. By dissecting how these plugins invoked kernel modules and traversed virtual memory, it became possible to align our plugin’s architecture with the expectations of the Volatility 3 engine.
+* The official **Volatility 3 documentation**
+* GitHub issues posted by other users encountering similar problems
+* Detailed plugin implementation examples within the framework
+* Online discussions from forums such as **Stack Overflow** and **GitHub Discussions**
 
-One particularly important lesson was the difference in **symbol resolution**. Volatility 3 enforces a stricter relationship between the symbol tables and memory layers. Unlike Volatility 2, where symbols like `_EPROCESS` could be referenced more loosely, Volatility 3 requires that all such references be mapped explicitly to a `context.modules[...]` object derived from the configuration. This understanding helped eliminate the `KeyError: 'nt_symbols'` and other related issues.
 
-During the debugging process, **incremental testing and verbose logging** were adopted as core practices. Instead of attempting to implement large blocks of logic at once, functionality was added step-by-step, with print statements and exception handling blocks used to verify assumptions at each stage. This made it easier to isolate problems and understand exactly which operations were failing and why.
+A key insight from this phase was the **value of examining existing and well-maintained plugins** that already functioned under the Volatility 3 architecture. Notably, plugins like `vadinfo`, `dumpfiles`, and `malfind` were analyzed in depth. These plugins demonstrated best practices in:
 
-Finally, the use of Unix utilities such as `file`, `strings`, and `xxd` proved indispensable for **verifying dump integrity**. These tools helped confirm that the dumped files were indeed valid PE binaries or data segments, even when the Volatility plugin itself returned ambiguous or failed results. This multi-tool validation approach ensured that the plugin’s output was not only syntactically correct but also forensically meaningful.
+* Memory access
+* Error handling
+* Symbol resolution
 
-Overall, the troubleshooting strategy emphasized **careful code analysis, community knowledge, modular development**, and consistent testing. These practices transformed an initially dysfunctional prototype into a working and reliable plugin aligned with Volatility 3's design principles.
+They served as crucial templates for the development of the new `procdump` port. By dissecting how these plugins invoked kernel modules and traversed virtual memory, it became possible to align our plugin’s architecture with the expectations of the Volatility 3 engine.
+
+
+One particularly important lesson was the **difference in symbol resolution**:
+
+* Volatility 3 enforces a **stricter relationship** between the symbol tables and memory layers.
+* Unlike Volatility 2, where symbols like `_EPROCESS` could be referenced more loosely, Volatility 3 requires that all such references be mapped explicitly to a `context.modules[...]` object derived from the configuration.
+
+This understanding helped eliminate the `KeyError: 'nt_symbols'` and other related issues.
+
+
+During the debugging process, **incremental testing** and **verbose logging** were adopted as core practices. Instead of implementing large blocks of logic at once, functionality was added step-by-step, with:
+
+* `print` statements,
+* `try/except` blocks,
+
+...used to verify assumptions at each stage. This made it easier to isolate problems and understand exactly which operations were failing and why.
+
+Finally, the use of **Unix utilities** such as `file`, `strings`, and `xxd` proved indispensable for verifying **dump integrity**. These tools helped confirm that the dumped files were indeed:
+
+* Valid **PE binaries**
+* Or meaningful **data segments**,
+
+...even when the Volatility plugin itself returned ambiguous or failed results.
+
+This **multi-tool validation** ensured that the plugin’s output was not only syntactically correct but also forensically meaningful.
+
+---
+
+Overall, the troubleshooting strategy emphasized:
+
+* Careful **code analysis**
+* Leveraging **community knowledge**
+* Embracing **modular development**
+* And maintaining **consistent testing** practices
+
+These combined efforts transformed an initially dysfunctional prototype into a **working and reliable plugin** aligned with **Volatility 3's design principles**.
+
 
 
 ### **4. Final Implementation**
