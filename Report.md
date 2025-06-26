@@ -33,7 +33,6 @@ This report outlines the full **porting process**, including:
 * And the **final implementation results**.
 
 
-
 ### 2. Background
 
 #### 2.1. Volatility 2 vs Volatility 3
@@ -86,7 +85,6 @@ Rebuilding this plugin thus required both a deep understanding of **Volatility 3
 The end result is a plugin that restores and improves the capabilities of the original `procdump`, tailored for Volatility 3's modern and modular forensic framework.
 
 
-
 ### 3. Methodology
 
 #### 3.1. Initial Setup
@@ -104,7 +102,6 @@ source venv/bin/activate
 
 This allowed for the installation of **Volatility 3** and its specific dependencies without interfering with system-wide Python packages.
 
----
 
 Once the virtual environment was ready:
 
@@ -118,7 +115,6 @@ pip install -r requirements.txt
 
 * Additional dependencies such as `capstone`, `pycryptodome`, and other Python packages required for memory parsing and binary analysis were installed using `pip`.
 
----
 
 After ensuring that the framework could run basic plugins on example images, the target memory image **`OtterCTF.vmem`** — a **Windows 7 x64 snapshot** — was placed in the working directory for analysis.
 
@@ -202,7 +198,6 @@ Finally, the use of **Unix utilities** such as `file`, `strings`, and `xxd` prov
 
 This **multi-tool validation** ensured that the plugin’s output was not only syntactically correct but also forensically meaningful.
 
----
 
 Overall, the troubleshooting strategy emphasized:
 
@@ -239,17 +234,23 @@ Overall, these design choices collectively ensured that the plugin was robust, u
 
 The final version of the `ProcdumpCustom` plugin was designed to replicate and modernize the behavior of the original Volatility 2 `procdump` plugin, while leveraging the capabilities and structure of the Volatility 3 framework.
 
-The plugin begins by **enumerating all active processes** using the `pslist` module, which is a reliable and standard way to retrieve the process list via the Windows kernel module provided in the configuration. Once the relevant processes are identified, the plugin uses an optional PID filter to target only specific processes as specified by the user. This allows precise targeting and avoids unnecessary dumping of irrelevant memory segments.
+The plugin begins by **enumerating all active processes** using the `pslist` module. This module is a reliable and standard method to retrieve the process list via the Windows kernel module provided in the configuration. Once the relevant processes are identified, the plugin can apply an **optional PID filter** to target only specific processes as specified by the user. This feature allows for **precise targeting** and avoids unnecessary dumping of irrelevant memory segments.
 
-For each selected process, the plugin then attempts to traverse its **Virtual Address Descriptor (VAD) tree**, which represents the structure of allocated memory regions. This traversal ensures a more comprehensive and realistic view of memory, compared to relying solely on the `ImageBaseAddress` from the process's PEB, which often fails in Volatility 3 due to permission or mapping issues.
+For each selected process, the plugin attempts to **traverse its Virtual Address Descriptor (VAD) tree**, which represents the structure of allocated memory regions. This traversal ensures a more **comprehensive and realistic view** of memory, as opposed to relying solely on the `ImageBaseAddress` from the process's PEB — a method that frequently fails in Volatility 3 due to permission or mapping issues.
 
-During the traversal, each VAD region is read from memory and **dumped into a `.dmp` file**. The filename includes the process name, its PID, and the memory range of the region, helping analysts understand the origin and scope of the memory segment.
+During this traversal, each VAD region is read from memory and **dumped into a `.dmp` file**. The filename includes:
 
-To ensure that the dumped memory contains potentially valid executable data, the plugin performs a lightweight check for the **"MZ" signature** at the beginning of the memory content, which indicates a valid Portable Executable (PE) header. Although not a guarantee of full integrity, this heuristic greatly reduces the number of unusable dumps.
+* the process name,
+* its PID,
+* and the memory range of the region,
+  helping analysts understand the origin and scope of each extracted memory segment.
 
-The plugin is also **robust in handling errors and exceptions**. If a memory region is inaccessible due to invalid addresses or insufficient privileges, it catches the exception and logs a descriptive error message in the output. This ensures that the entire plugin doesn't fail because of one bad region and provides useful diagnostic information to the user.
+To ensure that the dumped memory contains potentially valid executable data, the plugin performs a lightweight check for the **"MZ" signature** at the beginning of the memory content. This signature indicates a valid Portable Executable (PE) header. Although not a guarantee of full integrity, this heuristic greatly reduces the number of unusable dumps.
 
-As a result, the final plugin behaves in a predictable, transparent, and user-friendly way, mirroring the intent of the original `procdump` while adapting it to the new Volatility 3 standards.
+The plugin is also **robust in handling errors and exceptions**. If a memory region is inaccessible, due to invalid addresses or insufficient privileges, the plugin catches the exception and logs a descriptive error message in the output. This approach ensures that the entire plugin doesn't fail because of a single bad memory region, and provides **useful diagnostic information** to the user.
+
+As a result, the final plugin behaves in a **predictable, transparent, and user-friendly** manner, mirroring the intent of the original `procdump`, while fully adapting it to the **modern standards of Volatility 3**.
+.
 
 
 ### 5. Evaluation
