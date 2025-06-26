@@ -55,13 +55,36 @@ These changes require plugin developers to rewrite Volatility 2 code using the n
 
 #### 2.2 The Procdump Plugin
 
-The original purpose of the `procdump` plugin in Volatility 2 was to extract in-memory executable files associated with running processes. It scanned the virtual address space of each process to locate the PE (Portable Executable) headers and dump the corresponding code segments to disk. This was particularly useful in malware investigations where analysts needed to recover unpacked or injected code from memory-resident processes.
+### **2.2 The Procdump Plugin**
 
-In Volatility 2, the plugin used direct access to the memory layers and process structures to identify valid image bases, verify the presence of an `MZ` header, and dump a fixed-size segment of memory as a file. Its implementation was mostly procedural, heavily reliant on the now outdated plugin and memory access APIs. Despite its simplicity, it was effective in many investigative scenarios.
+The original purpose of the `procdump` plugin in **Volatility 2** was to extract **in-memory executable files** associated with running processes. It scanned the virtual address space of each process to locate the **PE (Portable Executable) headers** and dump the corresponding **code segments to disk**. This was particularly useful in **malware investigations**, where analysts needed to recover **unpacked or injected code** from memory-resident processes.
 
-One of the primary challenges addressed in this project was the fact that the `procdump` plugin had not been ported to Volatility 3. Due to the extensive architectural changes between Volatility 2 and 3, the original code could not be reused as-is. Instead, a full reimplementation was required, leveraging the class-based structure of Volatility 3, the `PluginInterface` inheritance model, the `TreeGrid` rendering output, and the improved handling of symbol spaces and memory access.
+In Volatility 2, the plugin used direct access to the memory layers and process structures to:
 
-Rebuilding this plugin thus required both a deep understanding of Volatility 3's plugin architecture and a practical strategy for traversing process memory spaces. This included integrating symbol resolution, managing invalid memory access gracefully, and dumping relevant virtual address descriptors (VADs) into individual files, all while maintaining compatibility with standard Volatility 3 practices.
+* Identify valid image bases,
+* Verify the presence of an **`MZ` header** (indicating a PE file), and
+* Dump a **fixed-size segment** of memory to disk.
+
+Its implementation was mostly **procedural**, relying heavily on the now outdated plugin and memory access APIs. Despite its simplicity, it was effective in many investigative scenarios.
+
+One of the primary challenges addressed in this project was the fact that the `procdump` plugin had not been ported to **Volatility 3**. Due to the extensive architectural changes between Volatility 2 and 3, the original code could not be reused as-is.
+
+Instead, a **full reimplementation** was required, leveraging:
+
+* The **class-based structure** of Volatility 3,
+* The `PluginInterface` inheritance model,
+* The `TreeGrid` rendering output system,
+* Improved handling of **symbol spaces** and **memory layer abstraction**.
+
+Rebuilding this plugin thus required both a deep understanding of **Volatility 3's plugin architecture** and a practical strategy for **traversing process memory spaces**. This included:
+
+* Integrating correct **symbol resolution** for kernel and process structures,
+* Managing **invalid memory access** gracefully,
+* Dumping relevant **Virtual Address Descriptors (VADs)** into individual `.dmp` files,
+* Maintaining strict **compatibility** with Volatility 3 plugin standards.
+
+The end result is a plugin that restores and improves the capabilities of the original `procdump`, tailored for Volatility 3's modern and modular forensic framework.
+
 
 
 ### 3. Methodology
