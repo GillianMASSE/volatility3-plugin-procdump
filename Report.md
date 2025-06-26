@@ -1,6 +1,5 @@
-### **Title Page**
+### **Report - Porting the Volatility2 Procdump Plugin to Volatility3 **
 
-* Title: **Porting the Volatility2 Procdump Plugin to Volatility3**
 * Author: Gillian MASSE
 * Course: Digital Forensics
 * Institution: EURECOM
