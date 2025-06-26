@@ -252,15 +252,6 @@ The plugin is also **robust in handling errors and exceptions**. If a memory reg
 As a result, the final plugin behaves in a predictable, transparent, and user-friendly way, mirroring the intent of the original `procdump` while adapting it to the new Volatility 3 standards.
 
 
-
-#### 4.3. Output Organization
-
-* Automatic classification of dumped files.
-* Usage of `file` and `strings` commands to verify dump validity.
-* Optional post-processing script to sort files by type.
-
----
-
 ### 5. Evaluation
 
 The plugin was tested on a real Windows 7 memory dump obtained from the OtterCTF challenge. The results confirmed the expected behavior: processes were correctly identified, and executable memory regions were extracted with valid `MZ` headers.
