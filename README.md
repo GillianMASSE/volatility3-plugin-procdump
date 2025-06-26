@@ -7,7 +7,7 @@ This repository contains a custom Volatility 3 plugin, `ProcdumpCustom`, designe
 ```
 ├── procdump_custom.py         # The plugin file to be copied into the Volatility 3 plugin directory
 ├── README.md                  # This file
-├── Procdump_Report.pdf        # Full technical report describing the project and development process
+├── Report.md                  # Full technical report describing the project and development process
 ```
 
 ## 📦 Requirements
@@ -82,7 +82,7 @@ This allows validation of dumped executable format (e.g., PE32+) and discovery o
 
 ## 🧠 About This Project
 
-This plugin was developed as part of a digital forensics course project. The full methodology, implementation steps, and evaluations are available in the provided `Procdump_Report.pdf`.
+This plugin was developed as part of a digital forensics course project. The full methodology, implementation steps, and evaluations are available in the provided `Report.md`.
 
 ## 📄 License
 
