@@ -8,6 +8,7 @@ This repository contains a custom Volatility 3 plugin, `ProcdumpCustom`, designe
 ├── procdump_custom.py         # The plugin file to be copied into the Volatility 3 plugin directory
 ├── README.md                  # This file
 ├── Report.md                  # Full technical report describing the project and development process
+├── LOGS/                      # All the logs from the testing part
 ```
 
 ## 📦 Requirements
