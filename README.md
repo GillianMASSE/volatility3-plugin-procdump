@@ -91,11 +91,3 @@ This allows validation of dumped executable format (e.g., PE32+) and discovery o
 ## 🧠 About This Project
 
 This plugin was developed as part of a digital forensics course project. The full methodology, implementation steps, and evaluations are available in the provided `Report.md`.
-
-## 📄 License
-
-This project is provided for educational and research purposes only.
-
-
-Dans ce readme, ajoute le fait qu'on peut télécharger la vmem OtterCTF.vmem ici 
-https://mega.nz/file/sh8wmCIL#b4tpech4wzc3QQ6YgQ2uZnOmctRZ2duQxDqxbkWYipQ
