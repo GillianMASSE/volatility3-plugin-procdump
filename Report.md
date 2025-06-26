@@ -91,11 +91,51 @@ The end result is a plugin that restores and improves the capabilities of the or
 
 #### 3.1. Initial Setup
 
-The initial setup of the project began with preparing an appropriate working environment for plugin development and testing. A Linux-based system (Ubuntu) was chosen due to its compatibility with Python tooling and ease of using command-line forensic tools. To isolate dependencies and ensure a controlled environment, a dedicated Python virtual environment was created. This allowed for the installation of Volatility 3 and its specific dependencies without interfering with system-wide Python packages.
+#### 3.1. Initial Setup
 
-Once the virtual environment was ready, the latest version of the Volatility 3 framework was cloned from its official GitHub repository. Dependencies such as `capstone`, `pycryptodome`, and other Python packages required for memory parsing and binary analysis were installed using `pip`. After ensuring that the framework could run basic plugins on example images, the target memory image `OtterCTF.vmem`—a Windows 7 x64 snapshot—was placed in the working directory for analysis.
+The initial setup of the project began with preparing an appropriate working environment for plugin development and testing. A **Linux-based system (Ubuntu)** was chosen due to its compatibility with **Python tooling** and ease of using **command-line forensic tools**.
 
-With the test image in place, initial commands such as `windows.pslist` and `windows.info` were executed to confirm that the image was correctly parsed and that the required kernel symbols could be resolved. This step validated that the setup was correctly configured and ready for plugin development and debugging.
+To isolate dependencies and ensure a controlled environment, a **dedicated Python virtual environment** was created:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+This allowed for the installation of **Volatility 3** and its specific dependencies without interfering with system-wide Python packages.
+
+---
+
+Once the virtual environment was ready:
+
+* The latest version of the **Volatility 3 framework** was cloned from its official GitHub repository:
+
+```bash
+git clone https://github.com/volatilityfoundation/volatility3.git
+cd volatility3
+pip install -r requirements.txt
+```
+
+* Additional dependencies such as `capstone`, `pycryptodome`, and other Python packages required for memory parsing and binary analysis were installed using `pip`.
+
+---
+
+After ensuring that the framework could run basic plugins on example images, the target memory image **`OtterCTF.vmem`** — a **Windows 7 x64 snapshot** — was placed in the working directory for analysis.
+
+With the test image in place, initial commands such as:
+
+```bash
+python3 vol.py -f OtterCTF.vmem windows.pslist
+python3 vol.py -f OtterCTF.vmem windows.info
+```
+
+...were executed to confirm that:
+
+* The image was correctly parsed
+* The required **kernel symbols** could be resolved
+
+This step validated that the setup was correctly configured and ready for plugin development and debugging.
+
 
 
 #### 3.2 First Attempts and Errors
