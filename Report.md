@@ -5,17 +5,33 @@
 * Course: Digital Forensics
 * Institution: EURECOM
 
-### 1. Introduction
+### **1. Introduction**
 
-Memory forensics has become a crucial field in cybersecurity and digital investigations, enabling analysts to inspect volatile memory (RAM) for traces of malware, active processes, hidden artifacts, and injected code. A key tool in this domain is the Volatility Framework, a popular open-source memory analysis platform that allows the parsing and extraction of valuable runtime information from memory snapshots.
+**Memory forensics** has become a crucial field in **cybersecurity** and **digital investigations**, enabling analysts to inspect volatile memory (**RAM**) for traces of **malware**, **active processes**, **hidden artifacts**, and **injected code**. A key tool in this domain is the **Volatility Framework**, a popular open-source memory analysis platform that allows the parsing and extraction of valuable runtime information from memory snapshots.
 
-The Volatility ecosystem has undergone a major transition with the deprecation of Volatility 2. As Python 2.x became obsolete and modern environments moved towards Python 3.x and 64-bit architectures, the community shifted focus to Volatility 3. This newer version offers a modular, object-oriented design and enhanced support for modern operating systems. However, this migration came at the cost of losing access to many existing plugins that were never ported from Volatility 2 to Volatility 3.
+The **Volatility ecosystem** has undergone a major transition with the **deprecation of Volatility 2**. As **Python 2.x** became obsolete and modern environments moved towards **Python 3.x** and **64-bit architectures**, the community shifted focus to **Volatility 3**. This newer version offers a **modular**, **object-oriented design** and enhanced support for modern operating systems. However, this migration came at the cost of losing access to many existing plugins that were never ported from Volatility 2 to Volatility 3.
 
-One of the critical plugins missing in Volatility 3 is `procdump`. Originally designed for Volatility 2, this plugin allowed investigators to dump executable images of running processes from memory. Such functionality is essential when analyzing malware, reverse engineering packed binaries, or preserving forensic artifacts for further examination.
+One of the **critical plugins missing** in Volatility 3 is `procdump`. Originally designed for Volatility 2, this plugin allowed investigators to **dump executable images of running processes from memory**. Such functionality is essential when:
 
-The objective of this project is to re-implement the `procdump` plugin for Volatility 3. This includes creating a new plugin compatible with the updated framework, which will iterate through process memory, identify executable regions, and save them as Portable Executable (PE) files. The target memory sample used for this development and testing is `OtterCTF.vmem`, a 64-bit Windows 7 memory image commonly used for training and CTF challenges.
+* Analyzing **malware**,
+* Reverse engineering **packed binaries**, or
+* Preserving **forensic artifacts** for further examination.
 
-This report outlines the full porting process, including the technical challenges encountered, the methodological solutions explored, and the final implementation results.
+The **objective** of this project is to **re-implement** the `procdump` plugin for **Volatility 3**. This includes:
+
+* Creating a new plugin compatible with the updated framework,
+* Iterating through process memory,
+* Identifying **executable regions**, and
+* Saving them as **Portable Executable (PE)** files.
+
+The **target memory sample** used for development and testing is `OtterCTF.vmem`, a **64-bit Windows 7 memory image** commonly used for **training** and **CTF challenges**.
+
+This report outlines the full **porting process**, including:
+
+* The **technical challenges** encountered,
+* The **methodological solutions** explored,
+* And the **final implementation results**.
+
 
 
 ### 2. Background
@@ -23,12 +39,15 @@ This report outlines the full porting process, including the technical challenge
 #### 2.1. Volatility 2 vs Volatility 3
 
 **Architectural Differences**
+
 Volatility 2 and Volatility 3 differ significantly in their core design. Volatility 2 was built around a monolithic structure where plugins directly interacted with memory layers and types. In contrast, Volatility 3 adopts a modular and object-oriented design, emphasizing separation of concerns and extensibility. It introduces better abstraction layers, support for multiple platforms, and a cleaner API.
 
 **Configuration and Symbol Handling**
+
 In Volatility 2, symbols and kernel structures were hardcoded or manually defined through profiles. Volatility 3 leverages ISF (Intermediate Symbol Format) files and dynamically loads kernel symbols via the `kernel` module. This allows for more accurate and flexible parsing of operating system internals.
 
 **Plugin API Evolution**
+
 The plugin system has evolved from procedural scripting in Volatility 2 to class-based interfaces in Volatility 3. Each plugin now inherits from `PluginInterface`, defines `get_requirements()` for CLI parameters, and uses `run()` to output data in a structured format like `TreeGrid`. This change improves maintainability and enforces a standard plugin lifecycle.
 
 These changes require plugin developers to rewrite Volatility 2 code using the new interfaces and conventions introduced in Volatility 3, ensuring compatibility with the latest framework features and standards.
